@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude Code & Codex Slash Commands 速查表</title>
+    <style>
+      :root {
+        --bg: #f4efe6;
+        --panel: rgba(255, 252, 246, 0.9);
+        --panel-strong: #fffaf1;
+        --text: #1f2a22;
+        --muted: #586456;
+        --line: rgba(41, 58, 45, 0.12);
+        --shadow: 0 24px 80px rgba(54, 49, 32, 0.12);
+        --claude: #c46a2d;
+        --claude-soft: rgba(196, 106, 45, 0.12);
+        --codex: #0d7667;
+        --codex-soft: rgba(13, 118, 103, 0.12);
+        --warn: #8a5c13;
+        --warn-soft: rgba(179, 126, 25, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "SF Pro Display", "PingFang TC", "Noto Sans TC", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(196, 106, 45, 0.18), transparent 32%),
+          radial-gradient(circle at top right, rgba(13, 118, 103, 0.14), transparent 28%),
+          linear-gradient(180deg, #fbf7f0 0%, var(--bg) 100%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 32px auto 72px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(251, 245, 233, 0.9));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto -80px -120px auto;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(13, 118, 103, 0.16), transparent 70%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(31, 42, 34, 0.05);
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.04em;
+      }
+
+      h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(2rem, 4vw, 3.6rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 860px;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .hero-grid,
+      .quick-grid,
+      .detail-grid,
+      .compare-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero-grid {
+        margin-top: 26px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .stat,
+      .panel,
+      .command-card,
+      .compare-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        box-shadow: 0 10px 30px rgba(54, 49, 32, 0.06);
+      }
+
+      .stat {
+        padding: 18px 20px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .section {
+        margin-top: 26px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        letter-spacing: -0.03em;
+      }
+
+      .section-title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .panel {
+        padding: 22px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tab {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--muted);
+        padding: 10px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .tab.active {
+        color: var(--text);
+        background: rgba(31, 42, 34, 0.06);
+      }
+
+      .search {
+        min-width: min(100%, 280px);
+        flex: 1 1 280px;
+        max-width: 380px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        padding: 12px 16px;
+        font: inherit;
+      }
+
+      .quick-grid {
+        margin-top: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      }
+
+      .command-card {
+        padding: 18px;
+      }
+
+      .command-card[data-kind="claude"] {
+        background: linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(255, 247, 239, 0.96));
+      }
+
+      .command-card[data-kind="codex"] {
+        background: linear-gradient(180deg, rgba(247, 255, 253, 0.98), rgba(240, 252, 250, 0.96));
+      }
+
+      .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .pill.claude {
+        background: var(--claude-soft);
+        color: var(--claude);
+      }
+
+      .pill.codex {
+        background: var(--codex-soft);
+        color: var(--codex);
+      }
+
+      .pill.confirmed {
+        background: rgba(31, 42, 34, 0.08);
+        color: var(--text);
+      }
+
+      .pill.caution {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .command-card code {
+        font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .command-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+      }
+
+      .command-card p,
+      .command-card li,
+      .compare-card li,
+      .source-note li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .command-card ul,
+      .compare-card ul,
+      .source-note ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+      }
+
+      .example {
+        margin-top: 14px;
+        border-radius: 16px;
+        background: rgba(31, 42, 34, 0.04);
+        border: 1px solid rgba(31, 42, 34, 0.06);
+        padding: 12px 14px;
+      }
+
+      .example strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: var(--text);
+      }
+
+      .example pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: 0.9rem/1.7 "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+      }
+
+      .detail-grid,
+      .compare-grid {
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      }
+
+      .compare-card {
+        padding: 20px;
+      }
+
+      .source-note {
+        margin-top: 24px;
+        padding: 20px 22px;
+        border-radius: 22px;
+        background: var(--panel-strong);
+        border: 1px dashed rgba(31, 42, 34, 0.18);
+      }
+
+      .source-note h3 {
+        margin: 0 0 10px;
+      }
+
+      .source-note p {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .source-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .source-links a {
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 10px 12px;
+        background: rgba(31, 42, 34, 0.05);
+      }
+
+      .small {
+        font-size: 0.92rem;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 18px, 1180px);
+          margin: 18px auto 48px;
+        }
+
+        .hero,
+        .panel,
+        .source-note {
+          padding: 20px;
+          border-radius: 22px;
+        }
+
+        .toolbar {
+          align-items: stretch;
+        }
+
+        .search {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div class="eyebrow">2026-05-08 整理版 ・ Claude Code + Codex</div>
+        <h1>Slash Commands 中文速查表</h1>
+        <p>
+          這份表把 <strong>Claude Code</strong> 跟 <strong>Codex</strong> 的常用 slash commands
+          放在同一頁。上半部是快速查詢，下半部是詳細用途、什麼時候該用、以及可直接照抄的例子。
+          Codex 那一欄我有特別標記哪些是官方明說、哪些是我從你這台安裝版本本機確認到的。
+        </p>
+        <div class="hero-grid">
+          <div class="stat">
+            <strong>20+</strong>
+            <span>Claude Code 常用指令，依照官方 commands / interactive mode 文件整理。</span>
+          </div>
+          <div class="stat">
+            <strong>保守收錄</strong>
+            <span>Codex 目前公開 slash command 文件較少，因此只收錄可確認的常用項目。</span>
+          </div>
+          <div class="stat">
+            <strong>混合版面</strong>
+            <span>前半段秒查，後半段補完整說明，適合平常直接開著查。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>快速索引</h2>
+            <p>先用搜尋和分頁快速找到指令，再往下看細節。</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab active" data-filter="all">全部</button>
+              <button class="tab" data-filter="claude">Claude Code</button>
+              <button class="tab" data-filter="codex">Codex</button>
+            </div>
+            <input
+              id="searchInput"
+              class="search"
+              type="search"
+              placeholder="搜尋 /compact、/plan、/model、/mode..."
+            />
+          </div>
+
+          <div class="quick-grid" id="quickGrid">
+            <article class="command-card" data-kind="claude" data-keywords="/help claude code 幫助 指令">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/help</code></h3>
+              <p>看所有可用指令與內建功能。</p>
+              <div class="example"><strong>例子</strong><pre>/help</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/compact claude 壓縮 context 上下文">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/compact</code></h3>
+              <p>壓縮對話上下文，保留重點繼續做事。</p>
+              <div class="example"><strong>例子</strong><pre>/compact 保留 bug、已改檔案、待辦事項</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/clear claude 新對話 reset new">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/clear</code></h3>
+              <p>清空當前上下文，開新對話，但舊 session 仍可恢復。</p>
+              <div class="example"><strong>例子</strong><pre>/clear</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/plan claude 規劃 plan mode">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/plan</code></h3>
+              <p>直接進入 plan mode，先分析與規劃。</p>
+              <div class="example"><strong>例子</strong><pre>/plan 幫我拆解這個 auth bug</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/model claude 切模型">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/model</code></h3>
+              <p>切換模型；不帶參數時開選單。</p>
+              <div class="example"><strong>例子</strong><pre>/model sonnet</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/effort claude 思考深度">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/effort</code></h3>
+              <p>調整思考深度：<code>low</code> 到 <code>max</code>。</p>
+              <div class="example"><strong>例子</strong><pre>/effort high</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/permissions claude 權限 allowed tools">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/permissions</code></h3>
+              <p>管理哪些工具要問你、哪些可自動放行。</p>
+              <div class="example"><strong>例子</strong><pre>/permissions</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/resume claude 恢復 session continue">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/resume</code></h3>
+              <p>恢復舊對話，可用 ID 或名稱。</p>
+              <div class="example"><strong>例子</strong><pre>/resume payment-fix</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/diff claude 看變更 git diff">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/diff</code></h3>
+              <p>查看未提交修改與 Claude 每回合造成的 diff。</p>
+              <div class="example"><strong>例子</strong><pre>/diff</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/review claude code review pr">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/review</code></h3>
+              <p>在目前 session 做 code review，也可指定 PR。</p>
+              <div class="example"><strong>例子</strong><pre>/review 123</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/config claude 設定 settings">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/config</code></h3>
+              <p>調整模型、主題、輸出風格與其他設定。</p>
+              <div class="example"><strong>例子</strong><pre>/config</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="claude" data-keywords="/usage claude 成本 使用量 stats cost">
+              <div class="meta">
+                <span class="pill claude">Claude Code</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/usage</code></h3>
+              <p>查看用量、費用與活動統計。</p>
+              <div class="example"><strong>例子</strong><pre>/usage</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="/mode codex 模式 approval auto edit full auto suggest">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill confirmed">官方確認</span>
+              </div>
+              <h3><code>/mode</code></h3>
+              <p>在 session 內切換執行模式，例如 Suggest / Auto Edit / Full Auto。</p>
+              <div class="example"><strong>例子</strong><pre>/mode</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="/review codex code review 本機確認">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill confirmed">本機版本確認</span>
+              </div>
+              <h3><code>/review</code></h3>
+              <p>在 Codex 中啟動 code review；目前安裝版本有明確跡象支援。</p>
+              <div class="example"><strong>例子</strong><pre>/review</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="/ slash menu codex 指令選單">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill caution">實用提醒</span>
+              </div>
+              <h3><code>/</code> 指令選單</h3>
+              <p>Codex 每個版本可見的 slash commands 可能不同，最準的方法是直接輸入 <code>/</code> 看當前版本清單。</p>
+              <div class="example"><strong>例子</strong><pre>/</pre></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>Claude Code 詳解</h2>
+            <p>這一區都來自 Claude Code 官方 commands / interactive mode 文件。</p>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/compact</code></h3>
+            <p>用在對話變長、context 快滿、但你不想重新開新 session 的時候。</p>
+            <ul>
+              <li>效果是把前面內容濃縮成摘要，繼續同一條工作線。</li>
+              <li>跟 <code>/clear</code> 不同，它不是重開，而是壓縮。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/compact 請保留目前 bug root cause、已改檔案、下一步驗證項目</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/plan</code></h3>
+            <p>適合先分析、先拆解，而不是立刻修改程式的情境。</p>
+            <ul>
+              <li>像是大型重構、陌生 repo、需求不清楚時特別好用。</li>
+              <li>你也可以直接在指令後面附任務描述。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/plan 幫我規劃把 monolith auth 流程拆成 service + middleware</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/model</code> 與 <code>/effort</code></h3>
+            <p>這兩個最常一起用。前者是換模型，後者是調整同一模型的思考深度。</p>
+            <ul>
+              <li><code>/model</code> 解決「要用哪個模型」。</li>
+              <li><code>/effort</code> 解決「要想多深」。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/model sonnet
+/effort high</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/permissions</code></h3>
+            <p>當你覺得 Claude 一直問權限，或你想更保守地限制工具時，就用這個。</p>
+            <ul>
+              <li>可管理 allow / ask / deny 規則。</li>
+              <li>也可以看最近 auto mode 被拒絕了哪些操作。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/permissions</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/resume</code>、<code>/rename</code>、<code>/clear</code></h3>
+            <p>這三個是 session 管理組合。</p>
+            <ul>
+              <li><code>/rename</code> 幫當前工作命名，之後較好恢復。</li>
+              <li><code>/resume</code> 回到舊工作脈絡。</li>
+              <li><code>/clear</code> 則是重新開新上下文。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/rename dashboard-stage-2
+/clear
+/resume dashboard-stage-2</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="claude">
+            <div class="meta">
+              <span class="pill claude">Claude Code</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/diff</code>、<code>/review</code>、<code>/usage</code></h3>
+            <p>這三個很適合做收尾。</p>
+            <ul>
+              <li><code>/diff</code> 看改了什麼。</li>
+              <li><code>/review</code> 請它幫你做 code review。</li>
+              <li><code>/usage</code> 看花了多少用量與成本。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/diff
+/review
+/usage</pre>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>Codex 詳解</h2>
+            <p>這一區採保守整理法。只放我在 2026-05-08 能查到的官方訊息與你這台安裝版本可驗證內容。</p>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill confirmed">官方確認</span>
+            </div>
+            <h3><code>/mode</code></h3>
+            <p>這是目前最明確有官方文件提到的 Codex in-session slash command。</p>
+            <ul>
+              <li>OpenAI Help Center 明說可以在 session 內用 <code>/mode</code> 切換模式。</li>
+              <li>對應概念是 Suggest、Auto Edit、Full Auto 這類工作模式。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/mode</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill confirmed">本機版本確認</span>
+            </div>
+            <h3><code>/review</code></h3>
+            <p>你這台目前的 Codex 安裝內容裡，能看到明確的 <code>/review</code> 使用痕跡。</p>
+            <ul>
+              <li>另外設定字串裡也提到 review 可以在當前 chat 或分離 chat 啟動。</li>
+              <li>因此這條我列為「本機版本確認」，但不把它說成完整官方公開清單的一部分。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/review</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill caution">重要提醒</span>
+            </div>
+            <h3><code>/</code> 指令選單優先</h3>
+            <p>Codex 的 slash commands 目前不像 Claude Code 有完整公開參考頁，所以最準的方法仍然是直接叫出當前版本選單。</p>
+            <ul>
+              <li>不同版本、不同平台、不同功能旗標，顯示的指令可能不同。</li>
+              <li>所以這份表更像「起始導航」，不是 Codex 的完整法典。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill caution">實務建議</span>
+            </div>
+            <h3>Codex 常見對應觀念</h3>
+            <p>目前你若是在 Codex 工作，最值得先掌握的不是很多 slash commands，而是這些核心控制點。</p>
+            <ul>
+              <li>模式切換：優先記 <code>/mode</code>。</li>
+              <li>code review：若你版本可見，記 <code>/review</code>。</li>
+              <li>模型、批准、搜尋等其他能力，很多時候會在 UI 控制、啟動參數、設定檔或選單裡，而不一定透過公開文件中的 slash command 呈現。</li>
+            </ul>
+            <div class="example">
+              <strong>例子</strong>
+              <pre>/mode
+/review
+/</pre>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>兩者差異</h2>
+            <p>如果你同時用 Claude Code 跟 Codex，這裡是最容易搞混的地方。</p>
+          </div>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>上下文管理</h3>
+            <ul>
+              <li>Claude Code 有很成熟的 <code>/compact</code>、<code>/clear</code>、<code>/resume</code>。</li>
+              <li>Codex 目前公開文件對這塊的 slash commands 沒有同等完整的說明。</li>
+            </ul>
+          </article>
+
+          <article class="compare-card">
+            <h3>模式切換</h3>
+            <ul>
+              <li>Claude Code 偏向 <code>/plan</code>、<code>/permissions</code>、<code>/effort</code> 這種工作流控制。</li>
+              <li>Codex 目前官方最清楚提到的是 <code>/mode</code>，偏向執行模式切換。</li>
+            </ul>
+          </article>
+
+          <article class="compare-card">
+            <h3>文件完整度</h3>
+            <ul>
+              <li>Claude Code 有完整 commands reference，整理起來很明確。</li>
+              <li>Codex 現階段比較需要依官方說明、版本行為、當前 UI 選單一起判讀。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="source-note">
+        <h3>來源與可信度說明</h3>
+        <p class="small">
+          Claude Code 部分依據官方文件整理。Codex 部分則採保守策略：一部分來自 OpenAI Help Center / 官方頁面，
+          一部分來自你這台本機安裝版本 <code>codex-cli 0.128.0-alpha.1</code> 的可驗證內容。因為 Codex 目前沒有像
+          Claude Code 那樣完整公開的 slash commands 參考頁，所以我沒有把未確認的指令硬寫進去。
+        </p>
+        <ul class="small">
+          <li>Claude Code：<code>/compact</code>、<code>/plan</code>、<code>/model</code>、<code>/effort</code> 等都屬官方明列。</li>
+          <li>Codex：<code>/mode</code> 是官方文件可確認；<code>/review</code> 是目前本機版本內容可確認。</li>
+          <li>如果你之後更新 Codex，最準的方法仍然是直接在 app / CLI 內輸入 <code>/</code> 看當前版本清單。</li>
+        </ul>
+        <div class="source-links small">
+          <a href="https://code.claude.com/docs/en/commands" target="_blank" rel="noreferrer">Claude Code Commands</a>
+          <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank" rel="noreferrer">Claude Code Interactive Mode</a>
+          <a href="https://help.openai.com/en/articles/11096431-openai-codex-ci-getting-started" target="_blank" rel="noreferrer">OpenAI Codex CLI Help</a>
+          <a href="https://openai.com/index/introducing-the-codex-app/" target="_blank" rel="noreferrer">Introducing the Codex App</a>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const tabs = [...document.querySelectorAll(".tab")];
+      const cards = [...document.querySelectorAll(".command-card")];
+      const searchInput = document.getElementById("searchInput");
+
+      let currentFilter = "all";
+
+      function applyFilters() {
+        const q = searchInput.value.trim().toLowerCase();
+        cards.forEach((card) => {
+          const kind = card.dataset.kind;
+          const haystack = (card.dataset.keywords || "") + " " + card.textContent;
+          const matchFilter = currentFilter === "all" || kind === currentFilter;
+          const matchQuery = !q || haystack.toLowerCase().includes(q);
+          card.classList.toggle("hidden", !(matchFilter && matchQuery));
+        });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          currentFilter = tab.dataset.filter;
+          applyFilters();
+        });
+      });
+
+      searchInput.addEventListener("input", applyFilters);
+    </script>
+  </body>
+</html>
