@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Claude Code & Codex Slash Commands 速查表</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <style>
       :root {
         --bg: #f4efe6;
@@ -389,8 +390,8 @@
             <span>Claude Code 常用指令，依照官方 commands / interactive mode 文件整理。</span>
           </div>
           <div class="stat">
-            <strong>保守收錄</strong>
-            <span>Codex 目前公開 slash command 文件較少，因此只收錄可確認的常用項目。</span>
+            <strong>雙軌整理</strong>
+            <span>Codex 一邊列已確認 slash commands，一邊補上實際常用的 UI / 設定入口。</span>
           </div>
           <div class="stat">
             <strong>混合版面</strong>
@@ -571,6 +572,39 @@
               <p>Codex 每個版本可見的 slash commands 可能不同，最準的方法是直接輸入 <code>/</code> 看當前版本清單。</p>
               <div class="example"><strong>例子</strong><pre>/</pre></div>
             </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="codex model reasoning selector ui settings 模型 推理 深度">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill caution">常用入口</span>
+              </div>
+              <h3>模型與推理深度</h3>
+              <p>Codex 不一定把模型切換做成 slash command；很多時候會放在 UI 控制或 session 設定裡。</p>
+              <div class="example"><strong>重點</strong><pre>先看當前模型
+再調 reasoning / effort 類設定</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="codex approvals permissions sandbox full auto ask allow 權限 批准">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill caution">常用入口</span>
+              </div>
+              <h3>批准與權限</h3>
+              <p>像 sandbox、網路、是否自動執行工具，常常是模式或批准設定的一部分，而不是獨立 slash command。</p>
+              <div class="example"><strong>重點</strong><pre>切 mode 前
+先確認 approvals / sandbox / network</pre></div>
+            </article>
+
+            <article class="command-card" data-kind="codex" data-keywords="codex tools connectors browser github notion calendar 工具 連接器">
+              <div class="meta">
+                <span class="pill codex">Codex</span>
+                <span class="pill caution">常用入口</span>
+              </div>
+              <h3>工具與連接器</h3>
+              <p>很多真正常用能力其實來自工具、connector、browser 或外掛，而不是 slash command 本身。</p>
+              <div class="example"><strong>重點</strong><pre>先確認有沒有工具
+再決定要不要找 slash command</pre></div>
+            </article>
           </div>
         </div>
       </section>
@@ -698,7 +732,7 @@
         <div class="section-title">
           <div>
             <h2>Codex 詳解</h2>
-            <p>這一區採保守整理法。只放我在 2026-05-08 能查到的官方訊息與你這台安裝版本可驗證內容。</p>
+            <p>這一區改成雙軌整理：上半部是已確認的 slash commands，下半部是你實際每天更常碰到的操作入口。</p>
           </div>
         </div>
         <div class="detail-grid">
@@ -756,20 +790,61 @@
           <article class="command-card" data-kind="codex">
             <div class="meta">
               <span class="pill codex">Codex</span>
-              <span class="pill caution">實務建議</span>
+              <span class="pill caution">常用入口</span>
             </div>
-            <h3>Codex 常見對應觀念</h3>
-            <p>目前你若是在 Codex 工作，最值得先掌握的不是很多 slash commands，而是這些核心控制點。</p>
+            <h3>模型與推理深度</h3>
+            <p>Codex 跟 Claude Code 一個很大的差異，是很多高頻控制不一定用 slash command 暴露，而會放在 UI 或 session controls。</p>
             <ul>
-              <li>模式切換：優先記 <code>/mode</code>。</li>
-              <li>code review：若你版本可見，記 <code>/review</code>。</li>
-              <li>模型、批准、搜尋等其他能力，很多時候會在 UI 控制、啟動參數、設定檔或選單裡，而不一定透過公開文件中的 slash command 呈現。</li>
+              <li>先看目前跑的是哪個模型，再決定要不要提高 reasoning / effort。</li>
+              <li>這類控制點在實務上跟 slash commands 一樣重要，甚至更常用。</li>
+              <li>所以如果你只盯著 slash commands 數量，很容易低估 Codex 的實際可控性。</li>
             </ul>
             <div class="example">
-              <strong>例子</strong>
-              <pre>/mode
-/review
-/</pre>
+              <strong>使用心法</strong>
+              <pre>先確認模型
+再確認 reasoning
+最後才決定要不要切 mode</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill caution">常用入口</span>
+            </div>
+            <h3>批准、sandbox 與自動化程度</h3>
+            <p>另一個很常用但不一定長成 slash command 的控制點，是這回合可以做多深、多自動、能不能連網、能不能改檔。</p>
+            <ul>
+              <li><code>/mode</code> 會影響工作方式，但批准規則和 sandbox 也同樣重要。</li>
+              <li>很多時候你真正調的不是「指令」，而是這次 session 的權限邊界。</li>
+              <li>這也是 Codex 使用體驗常比單純指令表更關鍵的地方。</li>
+            </ul>
+            <div class="example">
+              <strong>使用心法</strong>
+              <pre>要保守：
+先看 approvals / sandbox
+
+要放手：
+再切到更積極的 mode</pre>
+            </div>
+          </article>
+
+          <article class="command-card" data-kind="codex">
+            <div class="meta">
+              <span class="pill codex">Codex</span>
+              <span class="pill caution">常用入口</span>
+            </div>
+            <h3>工具、連接器與外部能力</h3>
+            <p>在 Codex 裡，很多你以為會是一條 command 的功能，實際上是靠工具或 connector 提供的。</p>
+            <ul>
+              <li>例如 GitHub、browser、calendar、drive、notion 這些能力，常常比多一條 slash command 更有價值。</li>
+              <li>所以查 Codex 時，除了看 <code>/</code>，也要看這個環境到底開了哪些工具。</li>
+              <li>這能解釋為什麼「命令少」不一定等於「能做的事少」。</li>
+            </ul>
+            <div class="example">
+              <strong>使用心法</strong>
+              <pre>先問：這功能是 command，
+還是其實是工具入口？</pre>
             </div>
           </article>
         </div>
@@ -795,7 +870,7 @@
             <h3>模式切換</h3>
             <ul>
               <li>Claude Code 偏向 <code>/plan</code>、<code>/permissions</code>、<code>/effort</code> 這種工作流控制。</li>
-              <li>Codex 目前官方最清楚提到的是 <code>/mode</code>，偏向執行模式切換。</li>
+              <li>Codex 目前官方最清楚提到的是 <code>/mode</code>，但其他高頻控制常在 UI、設定與批准邊界裡。</li>
             </ul>
           </article>
 
@@ -814,11 +889,12 @@
         <p class="small">
           Claude Code 部分依據官方文件整理。Codex 部分則採保守策略：一部分來自 OpenAI Help Center / 官方頁面，
           一部分來自你這台本機安裝版本 <code>codex-cli 0.128.0-alpha.1</code> 的可驗證內容。因為 Codex 目前沒有像
-          Claude Code 那樣完整公開的 slash commands 參考頁，所以我沒有把未確認的指令硬寫進去。
+          Claude Code 那樣完整公開的 slash commands 參考頁，所以這頁把「已確認 command」跟「常用操作入口」分開寫。
         </p>
         <ul class="small">
           <li>Claude Code：<code>/compact</code>、<code>/plan</code>、<code>/model</code>、<code>/effort</code> 等都屬官方明列。</li>
           <li>Codex：<code>/mode</code> 是官方文件可確認；<code>/review</code> 是目前本機版本內容可確認。</li>
+          <li>Codex 其他高頻能力若沒公開成 slash command，這頁就改以「常用入口」方式說明，而不假裝它們是同一類東西。</li>
           <li>如果你之後更新 Codex，最準的方法仍然是直接在 app / CLI 內輸入 <code>/</code> 看當前版本清單。</li>
         </ul>
         <div class="source-links small">
